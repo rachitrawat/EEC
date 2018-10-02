@@ -5,12 +5,12 @@ def singleton_bound(n, k, d):
     print("Singleton Bound:", d <= n - k + 1)
 
 
-def hamming_bound(n, k, d):
+def hamming_bound(n, k, d, q=2):
     t = math.floor((d - 1) / 2)
     sum = 0
     for i in range(0, t + 1):
-        sum += nCr(n, i)
-    print("Hamming Bound:", 2 ** k * sum <= 2 ** n)
+        sum += nCr(n, i) * (q - 1) ** i
+    print("Hamming Bound:", q ** k * sum <= q ** n)
 
 
 def plotkin_bound(n, k, d):
