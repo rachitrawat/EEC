@@ -31,9 +31,9 @@ def griesmer_bound(n, k, d):
 
 def gilbert_varshamov_bound(n, k, d, q=2):
     sum = 0
-    for i in range(0, d):
-        sum += nCr(n, i) * (q - 1) ** i
-    print("Gilbert-Varshamov Bound:", q ** k >= q ** n / sum)
+    for i in range(0, d - 1):
+        sum += nCr(n - 1, i) * (q - 1) ** i
+    print("Gilbert-Varshamov Bound:", q ** k < q ** n / sum)
 
 
 def nCr(n, r):
