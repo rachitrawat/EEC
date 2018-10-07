@@ -1,4 +1,15 @@
+import itertools
 import numpy as np
+
+
+# returns mod 2 matrix
+def mod_2(matrix):
+    for idx, val in enumerate(matrix):
+        for idx2, val2 in enumerate(val):
+            matrix[idx][idx2] %= 2
+
+    return matrix
+
 
 r = int(input("Enter r:"))
 n = 2 ** r - 1
@@ -42,6 +53,13 @@ G = np.column_stack((I_k, A_T))
 print("\nG:")
 print(G)
 
+# Generate all codewords
+msg_lst = list(map(list, itertools.product([0, 1], repeat=k)))
+print("\nValid Codewords: ")
+for idx, val in enumerate(msg_lst):
+    prod = mod_2(np.matmul(np.matrix(val), G))
+    print(prod)
+
 while True:
     print("\n1. Encode a message")
     print("2. Decode a codeword")
@@ -56,9 +74,7 @@ while True:
 
         msg = np.matrix(list(map(int, msg)))
         # msg x G
-        prod = np.matmul(msg, G)
-        for idx, val in enumerate(prod):
-            prod[idx][0] = val[0] % 2
+        prod = mod_2(np.matmul(msg, G))
 
         print("Encoded message: ", prod)
 
@@ -73,16 +89,14 @@ while True:
         code = np.matrix(list(map(int, code)))
 
         # check if valid code
-        prod = np.matmul(H, code.transpose())
-        for idx, val in enumerate(prod):
-            prod[idx][0] = val[0] % 2
+        prod = mod_2(np.matmul(H, code.transpose()))
 
         print("Syndrome: ")
         print(prod)
 
         # check if syndrome is a 0 column vector
         if np.array_equal(prod, np.zeros((r, 1), dtype=int)):
-            print("Valid Codeword")
+            print("Valid Codeword!")
             print("Final Message: ", msg_bits)
         else:
             print("Error has occurred!")
