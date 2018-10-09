@@ -114,6 +114,7 @@ while True:
 
     elif ch == "2":
         code = list(input("\nEnter %s bit code: " % n))
+        code_orig = code
         msg_bits = ''.join(code[:k])
 
         if len(code) != n:
@@ -133,7 +134,15 @@ while True:
             print("Valid Codeword!")
             print("Final Message: ", msg_bits)
         else:
-            print("Error has occurred!")
+            arr = prod.tolist()
+            string = ''
+            for element in arr:
+                string += str(element[0])
+            int_val = int(string, 2)
+            print("Error has occurred in the %s bit!" % int_val)
+            code_orig[int_val - 1] = str((int(code_orig[int_val - 1]) + 1) % 2)
+            print("Decoded codeword: ", ''.join(code_orig))
+            print("Final Message: ", ''.join(code_orig[:k]))
 
     else:
         print("Invalid choice!")
