@@ -11,6 +11,33 @@ def mod_2(matrix):
     return matrix
 
 
+# rearrage columns of matrix in ascending order
+def rearrange(matrix1, matrix2):
+    H = []
+    G = []
+    dict = {}
+    for i in range(0, n):
+        # get ith column and convert to str
+        c1 = list(map(str, matrix1[:, i]))
+        int_val = int(''.join(c1), 2)
+        dict[i] = int_val
+
+    sorted_dict = sorted(dict.items(), key=lambda kv: kv[1])
+    for idx, val in enumerate(sorted_dict):
+        H.append(list("{0:b}".format(idx + 1).zfill(r)))
+        c2 = matrix2[:, val[0]]
+        G.append(list(c2.tolist()))
+
+    # convert all elements to int
+    for idx, val in enumerate(H):
+        H[idx] = list(map(int, H[idx]))
+
+    H = list(map(list, zip(*H)))
+    G = list(map(list, zip(*G)))
+
+    return np.matrix(H), np.matrix(G)
+
+
 r = int(input("Enter r:"))
 n = 2 ** r - 1
 k = n - r
@@ -45,12 +72,19 @@ A = list(map(list, zip(*A)))
 
 # H = [A|I]
 H = np.column_stack((A, I_r))
-print("\nH:")
+print("\nH std:")
 print(H)
 
 # G = [I|-A^T]
 G = np.column_stack((I_k, A_T))
-print("\nG:")
+print("\nG std:")
+print(G)
+
+# rearrange columns in ascending order
+H, G = rearrange(H, G)
+print("\nH asc:")
+print(H)
+print("\nG asc:")
 print(G)
 
 # Generate all codewords
