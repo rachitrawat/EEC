@@ -16,8 +16,8 @@ n = 2 ** r - 1
 k = n - r
 
 print("n:", n)
-print("k", k)
-print("r", k)
+print("k:", k)
+print("r:", r)
 
 # A: r x k matrix
 A = []
