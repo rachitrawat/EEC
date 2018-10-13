@@ -1,4 +1,5 @@
 import itertools
+
 import numpy as np
 
 
@@ -9,33 +10,6 @@ def mod_2(matrix):
             matrix[idx][idx2] %= 2
 
     return matrix
-
-
-# rearrage columns of matrix in ascending order
-def rearrange(matrix1, matrix2):
-    H = []
-    G = []
-    dict = {}
-    for i in range(0, n):
-        # get ith column and convert to str
-        c1 = list(map(str, matrix1[:, i]))
-        int_val = int(''.join(c1), 2)
-        dict[i] = int_val
-
-    sorted_dict = sorted(dict.items(), key=lambda kv: kv[1])
-    for idx, val in enumerate(sorted_dict):
-        H.append(list("{0:b}".format(idx + 1).zfill(r)))
-        c2 = matrix2[:, val[0]]
-        G.append(list(c2.tolist()))
-
-    # convert all elements to int
-    for idx, val in enumerate(H):
-        H[idx] = list(map(int, H[idx]))
-
-    H = list(map(list, zip(*H)))
-    G = list(map(list, zip(*G)))
-
-    return np.matrix(H), np.matrix(G)
 
 
 r = int(input("Enter r:"))
@@ -78,13 +52,6 @@ print(H)
 # G = [I|-A^T]
 G = np.column_stack((I_k, A_T))
 print("\nG std:")
-print(G)
-
-# rearrange columns in ascending order
-H, G = rearrange(H, G)
-print("\nH asc:")
-print(H)
-print("\nG asc:")
 print(G)
 
 # Generate all codewords
@@ -134,13 +101,9 @@ while True:
             print("Valid Codeword!")
             print("Final Message: ", msg_bits)
         else:
-            arr = prod.tolist()
-            string = ''
-            for element in arr:
-                string += str(element[0])
-            int_val = int(string, 2)
-            print("Error has occurred in the %s bit!" % int_val)
-            code_orig[int_val - 1] = str((int(code_orig[int_val - 1]) + 1) % 2)
+            err_column_no = (np.where((H == prod).all(0))[1][0])
+            print("Error has occurred in the %s bit!" % str(err_column_no + 1))
+            code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
             print("Decoded codeword: ", ''.join(code_orig))
             print("Final Message: ", ''.join(code_orig[:k]))
 
