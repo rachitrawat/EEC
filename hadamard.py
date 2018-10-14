@@ -19,7 +19,7 @@ print("p: ", p)
 
 QR = []
 QNR = []
-for i in range(0, p):
+for i in range(1, p):
     QR.append(i ** 2 % p)
 
 QR = list(set(QR))
