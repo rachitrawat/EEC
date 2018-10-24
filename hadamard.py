@@ -80,19 +80,37 @@ def paley(n):
 
 
 def sylvester(n):
-    pass
+    H = numpy.matrix([[1, 1], [1, -1]])
+    r = int(math.log(n, 2))
+    x = 4
+    for i in range(1, r):
+        H = numpy.append(H, H, axis=1)
+        H = numpy.append(H, H, axis=0)
+
+        for i in range(x // 2, x):
+            for j in range(x // 2, x):
+                if H[i, j] == 1:
+                    H[i, j] = -1
+                else:
+                    H[i, j] = 1
+        x *= 2
+
+    print("\nH:")
+    print(H)
 
 
 n = int(input("Enter n: "))
 p = n - 1
 if n == 1:
-    print("\nH: ")
+    print("\nH:")
     print(numpy.matrix([[1]]))
 elif n == 2:
+    print("\nH:")
     print(numpy.matrix([[1, 1], [1, -1]]))
 elif math.ceil(math.log(n, 2)) == math.floor(math.log(n, 2)):
     print("%s is a power of 2" % n)
     print("Sylvester construction is possible")
+    sylvester(n)
 # Paley construction
 elif n % 4 == 0 and isPrime(n - 1):
     print("Paley construction is possible")
