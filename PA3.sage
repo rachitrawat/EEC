@@ -18,7 +18,7 @@ print "g(x):", gx
 import numpy as np
 
 G = np.zeros(shape=(k,n))
-H = np.zeros(shape=(n-k,n))
+# H = np.zeros(shape=(n-k,n))
 
 for i in range(0,k):
 	z=0
@@ -29,22 +29,21 @@ for i in range(0,k):
 			break
 
 
-f(x)=x^n+1
-hx= f.maxima_methods().divide(gx)[0].list()
-hx = [item.pyobject() % 2 for item in hx]
+# f(x)=x^n+1
+# hx= f.maxima_methods().divide(gx)[0].list()
+# hx = [item.pyobject() % 2 for item in hx]
 
-for i in range(0,n-k):
-	z=0
-	for j in range(n-1-i, -1, -1):
-		H[i][j]=hx[z]
-		z+=1
-		if z == len(hx):
-			break
+# for i in range(0,n-k):
+# 	z=0
+# 	for j in range(n-1-i, -1, -1):
+# 		H[i][j]=hx[z]
+# 		z+=1
+# 		if z == len(hx):
+# 			break
 
 print "\nG:", G
-print "\nH1:", H
 
-H2 = []
+H = []
 for i in range(0, 2):
 	tmp = []
 	for j in range(0, n):
@@ -52,11 +51,11 @@ for i in range(0, 2):
 			tmp.append(a^j)
 		else:
 			tmp.append((a^j)^3)
-	H2.append(tmp)
+	H.append(tmp)
 
 import pprint
-print("\nH2: ")
-pprint.pprint(H2)
+print("\nH: ")
+pprint.pprint(H)
 
 
 import itertools
