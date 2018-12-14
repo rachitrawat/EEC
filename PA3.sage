@@ -68,6 +68,14 @@ def mod_2(matrix):
 
     return matrix
 
+def trace_beta(beta):
+	sum = 0
+	for i in range(0, r):
+		sum += beta
+		beta *= beta
+	return sum
+
+
 # Generate all codewords
 msg_lst = list(map(list, itertools.product([0, 1], repeat=k)))
 print("\nValid Codewords: ")
@@ -130,17 +138,26 @@ while True:
         	print "Checking roots..."
         	beta = z2/(z1^3) + 1
         	print "beta: ", beta
-        	sum = 0
-        	for i in range(0, r):
-        		sum += beta
-        		beta *= beta
+        	sum = trace_beta(beta)
         	print "Trace: ", sum
         	if sum != 0:
         		print "No roots exists!"
         		print "Atleast 3 errors have occurred!"
         	else:
         		print "Two roots exists!"
-        		pass
+
+			NB = []
+			gen = 0
+			for i in range(0, 2 ^ r):
+				if trace_beta(a ^ i) != 0:
+					gen = (a ^ i)
+					break
+
+			for i in range(0, r):
+				NB.append(gen)
+				gen *= gen
+
+			print "Normal Basis: ", NB
             # err_column_no = (np.where((H == prod).all(0))[1][0])
             # print("Error has occurred in the %s bit!" % str(err_column_no + 1))
             # code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
