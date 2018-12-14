@@ -84,7 +84,7 @@ while True:
         msg = list(raw_input("\nEnter %s bit message: " % k))
 
         if len(msg) != k:
-            print("Invalid length. Enter %s bit message: " % k)
+            print("Invalid length!")
             continue
 
         msg = np.matrix(list(map(int, msg)))
@@ -99,27 +99,39 @@ while True:
         msg_bits = ''.join(code[:k])
 
         if len(code) != n:
-            print("Invalid length. Enter %s bit code: " % n)
+            print("Invalid length!")
             continue
 
-        code = np.matrix(list(map(int, code)))
+        code = list(map(int, code))
 
-        # check if valid code
-        prod = mod_2(np.matmul(H, code.transpose()))
+        z1=0
+        z2=0
+        for idx, val in enumerate(code):
+        	if val == 1:
+        		z1 += H[0][idx]
+        		z2 += H[1][idx]
 
-        print("Syndrome: ")
-        print(prod)
+        print "z1: ",z1
+        print "z2: ",z2
 
         # check if syndrome is a 0 column vector
-        if np.array_equal(prod, np.zeros((r, 1), dtype=int)):
-            print("Valid Codeword!")
-            print("Final Message: ", msg_bits)
+        if z1 == z2 == 0:
+            print "No error has occured!" 
+            print "Final Message: ", msg_bits
+        elif z1 != 0 and z2 == z1^3:
+        	pos = H[0].index(z1)
+        	print "1 error has occurred at position {}".format(pos+1)
+           	code_orig[pos] = str((int(code_orig[pos]) + 1) % 2)
+           	print "Decoded codeword: ", ''.join(code_orig)
+           	print "Final Message: ", ''.join(code_orig[:k])
+            # print "Final Message: ", ''.join(code_orig[:k])
         else:
-            err_column_no = (np.where((H == prod).all(0))[1][0])
-            print("Error has occurred in the %s bit!" % str(err_column_no + 1))
-            code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
-            print("Decoded codeword: ", ''.join(code_orig))
-            print("Final Message: ", ''.join(code_orig[:k]))
+        	pass
+            # err_column_no = (np.where((H == prod).all(0))[1][0])
+            # print("Error has occurred in the %s bit!" % str(err_column_no + 1))
+            # code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
+            # print("Decoded codeword: ", ''.join(code_orig))
+            # print("Final Message: ", ''.join(code_orig[:k]))
 
     else:
         print("Invalid choice!")
