@@ -18,7 +18,6 @@ print "g(x):", gx
 import numpy as np
 
 G = np.zeros(shape=(k,n))
-# H = np.zeros(shape=(n-k,n))
 
 for i in range(0,k):
 	z=0
@@ -27,19 +26,6 @@ for i in range(0,k):
 		z+=1
 		if z == len(gx.list()):
 			break
-
-
-# f(x)=x^n+1
-# hx= f.maxima_methods().divide(gx)[0].list()
-# hx = [item.pyobject() % 2 for item in hx]
-
-# for i in range(0,n-k):
-# 	z=0
-# 	for j in range(n-1-i, -1, -1):
-# 		H[i][j]=hx[z]
-# 		z+=1
-# 		if z == len(hx):
-# 			break
 
 print "\nG:", G
 
@@ -158,11 +144,53 @@ while True:
 				gen *= gen
 
 			print "Normal Basis: ", NB
-            # err_column_no = (np.where((H == prod).all(0))[1][0])
-            # print("Error has occurred in the %s bit!" % str(err_column_no + 1))
-            # code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
-            # print("Decoded codeword: ", ''.join(code_orig))
-            # print("Final Message: ", ''.join(code_orig[:k]))
+
+			nb_arr=[]
+			for element in NB:
+				nb_arr.append(element.polynomial().list())			
+
+			M = matrix(nb_arr)
+			M = ~M
+
+			b_arr = matrix(beta.polynomial().list())
+
+			M=M.numpy()
+			B=b_arr.numpy()
+			
+			tmp = B[0].tolist()
+			while True:
+				if len(tmp) != len(M[0]):
+					tmp.append(0)
+				else:
+					break
+
+			B = np.array(tmp)
+			prod = B.dot(M)
+
+			s = [0] 
+			for i in range(1, r):
+				s.append((s[i-1] + prod[i]) % 2)
+
+
+			Y = 0 
+
+			for i in range(0,r):
+				if s[i] != 0:
+					Y += NB[i]
+
+			r1 = z1 * Y
+			r2 = z1 + r1
+
+			print "i: ", r1
+			print "j: ", r2
+
+			pos1 = H[0].index(r1)
+			pos2 = H[0].index(r2)
+        	print "2 errors have occurred at positions {} {}".format(pos1+1, pos2+1)
+           	code_orig[pos1] = str((int(code_orig[pos1]) + 1) % 2)
+           	code_orig[pos2] = str((int(code_orig[pos2]) + 1) % 2)
+           	print "Decoded codeword: ", ''.join(code_orig)
+           	print "Final Message: ", ''.join(code_orig[:k])
 
     else:
         print("Invalid choice!")
