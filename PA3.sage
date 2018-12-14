@@ -30,7 +30,7 @@ for i in range(0,k):
 
 
 f(x)=x^n+1
-hx= f.maxima_methods().divide(g)[0].list()
+hx= f.maxima_methods().divide(gx)[0].list()
 hx = [item.pyobject() % 2 for item in hx]
 print "h(x):", hx
 
