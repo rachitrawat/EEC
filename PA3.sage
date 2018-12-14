@@ -124,9 +124,23 @@ while True:
            	code_orig[pos] = str((int(code_orig[pos]) + 1) % 2)
            	print "Decoded codeword: ", ''.join(code_orig)
            	print "Final Message: ", ''.join(code_orig[:k])
-            # print "Final Message: ", ''.join(code_orig[:k])
-        else:
-        	pass
+        elif z1 == 0 and z2 != 0:
+       		print "Atleast 3 errors have occurred!"
+       	elif z1 != 0 and z2 != z1^3:
+        	print "Checking roots..."
+        	beta = z2/(z1^3) + 1
+        	print "beta: ", beta
+        	sum = 0
+        	for i in range(0, r):
+        		sum += beta
+        		beta *= beta
+        	print "Trace: ", sum
+        	if sum != 0:
+        		print "No roots exists!"
+        		print "Atleast 3 errors have occurred!"
+        	else:
+        		print "Two roots exists!"
+        		pass
             # err_column_no = (np.where((H == prod).all(0))[1][0])
             # print("Error has occurred in the %s bit!" % str(err_column_no + 1))
             # code_orig[err_column_no] = str((int(code_orig[err_column_no]) + 1) % 2)
