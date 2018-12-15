@@ -120,76 +120,74 @@ while True:
         	if sum != 0:
         		print "No roots exists!"
         		print "Atleast 3 errors have occurred!"
-        		break
         	else:
-        		print "Two roots exists!"
+				print "Two roots exists!"
+				NB = []
+				gen = 0
+				for i in range(1, 2 ^ r):
+					if trace_beta(a ^ i) != 0:
+						gen = (a ^ i)
+						break
 
-			NB = []
-			gen = 0
-			for i in range(1, 2 ^ r):
-				if trace_beta(a ^ i) != 0:
-					gen = (a ^ i)
-					break
+				for i in range(0, r):
+					NB.append(gen)
+					gen *= gen
 
-			for i in range(0, r):
-				NB.append(gen)
-				gen *= gen
+				print "Normal Basis: ", NB
 
-			print "Normal Basis: ", NB
+				nb_arr=[]
+				for element in NB:
+					x=element.polynomial().list()
+					while True:
+						if len(x) < r:
+							x.append(0)
+						else:
+							break
+					nb_arr.append(x)
 
-			nb_arr=[]
-			for element in NB:
-				x=element.polynomial().list()
+				M = matrix(nb_arr)
+				M = ~M
+
+				b_arr = matrix(beta.polynomial().list())
+
+				M=M.numpy()
+				B=b_arr.numpy()
+
+				tmp = B[0].tolist()
 				while True:
-					if len(x) < r:
-						x.append(0)
+					if len(tmp) < r:
+						tmp.append(0)
 					else:
 						break
-				nb_arr.append(x)			
 
-			M = matrix(nb_arr)
-			M = ~M
+				B = np.array(tmp)
 
-			b_arr = matrix(beta.polynomial().list())
+				prod = B.dot(M)
 
-			M=M.numpy()
-			B=b_arr.numpy()
-			
-			tmp = B[0].tolist()
-			while True:
-				if len(tmp) < r:
-					tmp.append(0)
-				else:
-					break
-
-			B = np.array(tmp)
-
-			prod = B.dot(M)
-
-			s = [0] 
-			for i in range(1, r):
-				s.append((s[i-1] + prod[i]) % 2)
+				s = [0]
+				for i in range(1, r):
+					s.append((s[i-1] + prod[i]) % 2)
 
 
-			Y = 0 
+				Y = 0
 
-			for i in range(0,r):
-				if s[i] != 0:
-					Y += NB[i]
+				for i in range(0,r):
+					if s[i] != 0:
+						Y += NB[i]
 
-			r1 = z1 * Y
-			r2 = z1 + r1
+				r1 = z1 * Y
+				r2 = z1 + r1
 
-			print "i: ", r1
-			print "j: ", r2
+				print "i: ", r1
+				print "j: ", r2
 
-			pos1 = H[0].index(r1)
-			pos2 = H[0].index(r2)
-        	print "2 errors have occurred at positions {} {}".format(pos1+1, pos2+1)
-           	code_orig[pos1] = str((int(code_orig[pos1]) + 1) % 2)
-           	code_orig[pos2] = str((int(code_orig[pos2]) + 1) % 2)
-           	print "Decoded codeword: ", ''.join(code_orig)
-           	print "Final Message: ", ''.join(code_orig[:k])
+				pos1 = H[0].index(r1)
+				pos2 = H[0].index(r2)
+				print "2 errors have occurred at positions {} {}".format(pos1+1, pos2+1)
+				code_orig[pos1] = str((int(code_orig[pos1]) + 1) % 2)
+				code_orig[pos2] = str((int(code_orig[pos2]) + 1) % 2)
+				print "Decoded codeword: ", ''.join(code_orig)
+				print "Final Message: ", ''.join(code_orig[:k])
 
     else:
         print("Invalid choice!")
