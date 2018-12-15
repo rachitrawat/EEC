@@ -129,6 +129,7 @@ while True:
         	if sum != 0:
         		print "No roots exists!"
         		print "Atleast 3 errors have occurred!"
+        		break
         	else:
         		print "Two roots exists!"
 
