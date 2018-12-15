@@ -45,8 +45,6 @@ print("\nH: ")
 pprint.pprint(H)
 
 
-import itertools
-
 # returns mod 2 matrix
 def mod_2(matrix):
     for idx, val in enumerate(matrix):
@@ -61,14 +59,6 @@ def trace_beta(beta):
 		sum += beta
 		beta *= beta
 	return sum
-
-
-# Generate all codewords
-msg_lst = list(map(list, itertools.product([0, 1], repeat=k)))
-print("\nValid Codewords: ")
-for idx, val in enumerate(msg_lst):
-    prod = mod_2(np.matmul(np.matrix(val), G))
-    print(prod)
 
 while True:
     print("\n1. Encode a message")
