@@ -3,7 +3,7 @@ n = pow(2,r)-1
 k = n-2*r
 d = 5
 
-print("n:{} f:{} d:{} r:{}".format(n, k, d, r))
+print("n:{} k:{} d:{} r:{}".format(n, k, d, r))
 
 K.<a> = GF(2^r, name='a')
 print(K)
