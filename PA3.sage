@@ -134,7 +134,7 @@ while True:
 
 			NB = []
 			gen = 0
-			for i in range(0, 2 ^ r):
+			for i in range(1, 2 ^ r):
 				if trace_beta(a ^ i) != 0:
 					gen = (a ^ i)
 					break
@@ -147,7 +147,13 @@ while True:
 
 			nb_arr=[]
 			for element in NB:
-				nb_arr.append(element.polynomial().list())			
+				x=element.polynomial().list()
+				while True:
+					if len(x) < r:
+						x.append(0)
+					else:
+						break
+				nb_arr.append(x)			
 
 			M = matrix(nb_arr)
 			M = ~M
@@ -159,12 +165,13 @@ while True:
 			
 			tmp = B[0].tolist()
 			while True:
-				if len(tmp) != len(M[0]):
+				if len(tmp) < r:
 					tmp.append(0)
 				else:
 					break
 
 			B = np.array(tmp)
+
 			prod = B.dot(M)
 
 			s = [0] 
