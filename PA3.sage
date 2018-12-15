@@ -27,7 +27,8 @@ for i in range(0,k):
 		if z == len(gx.list()):
 			break
 
-print "\nG:", G
+print("\nG: ")
+print(G)
 
 H = []
 for i in range(0, 2):
