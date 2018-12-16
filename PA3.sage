@@ -60,6 +60,16 @@ def trace_beta(beta):
 		beta *= beta
 	return sum
 
+def getFinalMsg(k, G, code_orig):
+	msg = [int(G[:,0][0] * int(code_orig[0]))]
+	for i in range(1,k):
+		sum = 0
+		for idx, element in enumerate(G[:,i]):
+			if element == 1 and idx != i:
+				sum += msg[idx]
+		msg.append(int((sum + int(code_orig[i]))%2))
+	return ''.join([str(x) for x in msg])
+
 while True:
     print("\n1. Encode a message")
     print("2. Decode a codeword")
@@ -76,12 +86,12 @@ while True:
         # msg x G
         prod = mod_2(np.matmul(msg, G))
 
-        print "Encoded message: ", prod 
+        print "Encoded message: ", ''.join([str(int(x)) for x in prod.tolist()[0]])
 
     elif ch == 2:
         code = list(raw_input("\nEnter %s bit code: " % n))
         code_orig = code
-        msg_bits = ''.join(code[:k])
+        msg_bits = getFinalMsg(k,G,code_orig)
 
         if len(code) != n:
             print("Invalid length!")
@@ -108,7 +118,7 @@ while True:
         	print "1 error has occurred at position {}".format(pos+1)
            	code_orig[pos] = str((int(code_orig[pos]) + 1) % 2)
            	print "Decoded codeword: ", ''.join(code_orig)
-           	print "Final Message: ", ''.join(code_orig[:k])
+           	print "Final Message: ", getFinalMsg(k,G,code_orig)
         elif z1 == 0 and z2 != 0:
        		print "Atleast 3 errors have occurred!"
        	elif z1 != 0 and z2 != z1^3:
@@ -187,7 +197,7 @@ while True:
 				code_orig[pos1] = str((int(code_orig[pos1]) + 1) % 2)
 				code_orig[pos2] = str((int(code_orig[pos2]) + 1) % 2)
 				print "Decoded codeword: ", ''.join(code_orig)
-				print "Final Message: ", ''.join(code_orig[:k])
+				print "Final Message: ", getFinalMsg(k,G,code_orig)
 
     else:
         print("Invalid choice!")
