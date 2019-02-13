@@ -1,3 +1,9 @@
+"""
+Implementation of Binary Hadamard Codes in Python. Given a parameter n, the program
+generates a (n, n, n/2) Hadamard code if it can be generated using the Sylvester or the Paley
+construction, otherwise outputs (a) “not possible”, if not possible, or (b) “may be possible”.
+"""
+
 import math
 import random
 

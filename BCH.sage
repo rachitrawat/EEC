@@ -1,3 +1,10 @@
+"""
+Implementation of 2-error-correcting [n = 2r − 1, k = n − 2r, d ≥ 5] BCH Codes in Sage.
+Given a parameter r, the program generates a Generator and a Parity Check matrix. For any
+message as an input while encoding, the program outputs a codeword. And for any codeword as
+an input for decoding, it returns the decoded codeword and the final message.
+"""
+
 r = int(input("Enter r: "))
 n = pow(2,r)-1
 k = n-2*r

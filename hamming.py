@@ -1,3 +1,11 @@
+"""
+Implementation of Binary Hamming Codes in Python. Given a parameter r, the program
+generates a Generator and a Parity Check matrix. For any message as an input while encoding,
+the program outputs a codeword. And for any codeword as an input for decoding, the program returns
+the decoded codeword and the final message.
+
+"""
+
 import itertools
 
 import numpy as np
